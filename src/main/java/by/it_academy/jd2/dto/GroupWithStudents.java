@@ -3,14 +3,14 @@ package by.it_academy.jd2.dto;
 import java.util.List;
 
 public class GroupWithStudents {
-    private int idGroup;
+    private GroupDtoForBase idGroup;
     private List<Student> Students;
 
-    public int getIdGroup() {
+    public GroupDtoForBase getIdGroup() {
         return idGroup;
     }
 
-    public void setIdGroup(int idGroup) {
+    public void setIdGroup(GroupDtoForBase idGroup) {
         this.idGroup = idGroup;
     }
 
@@ -21,8 +21,4 @@ public class GroupWithStudents {
     public void setStudents(List<Student> students) {
         Students = students;
     }
-
-
-
-
 }
