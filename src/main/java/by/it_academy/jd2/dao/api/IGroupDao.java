@@ -8,6 +8,6 @@ import java.util.List;
 public interface IGroupDao extends AutoCloseable{
     GroupWithStudents getGroupWithStudent(int idGroup);
     void setGroupWithStudent(GroupWithStudents group);
-    void deleteAllStudentsFromGroup(GroupWithStudents group);
+    void deleteAllStudentsFromGroup(int idGroup);
     void deleteSomeStudentsFromGroup(GroupWithStudents group);
 }

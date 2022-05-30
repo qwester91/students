@@ -36,12 +36,12 @@ CREATE TABLE IF NOT EXISTS jdbc.cross_table
     CONSTRAINT students_unique UNIQUE (id_student),
     CONSTRAINT id_groupfk FOREIGN KEY (id_group)
     REFERENCES jdbc.groups (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-    ON DELETE CASCADE,
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION,
     CONSTRAINT students_idfk FOREIGN KEY (id_student)
     REFERENCES jdbc.students (id) MATCH SIMPLE
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
     )
 
     TABLESPACE pg_default;

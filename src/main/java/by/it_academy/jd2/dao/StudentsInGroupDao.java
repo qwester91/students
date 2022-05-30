@@ -33,6 +33,7 @@ public class StudentsInGroupDao implements IGroupDao {
                      "WHERE g.id = ?;")){
 
             statement.setInt(1, idGroup);
+            statement.execute();
             ResultSet resultSet = statement.getResultSet();
 
             group = map(resultSet);
@@ -46,17 +47,59 @@ public class StudentsInGroupDao implements IGroupDao {
 
     @Override
     public void setGroupWithStudent(GroupWithStudents group) {
+        int idGroup = group.getIdGroup().getId();
+        for (Student student : group.getStudents()) {
+            try (Connection connection = ConnectionFactory.getConnection();
+                 PreparedStatement statement = connection.prepareStatement("INSERT INTO jdbc.cross_table\n" +
+                         "            (id_group,\n" +
+                         "             id_student)\n" +
+                         "VALUES      (?, ?);  ")) {
 
+
+                statement.setInt(1, idGroup);
+                statement.setInt(2, student.getId());
+                statement.execute();
+
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
-    public void deleteAllStudentsFromGroup(GroupWithStudents group) {
+    public void deleteAllStudentsFromGroup(int idGroup) {
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM jdbc.cross_table\n" +
+                     "        WHERE  id_group = ?;")){
+
+            statement.setInt(1, idGroup);
+            statement.execute();
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
     @Override
     public void deleteSomeStudentsFromGroup(GroupWithStudents group) {
+        for (Student student : group.getStudents()) {
 
+
+            try (Connection connection = ConnectionFactory.getConnection();
+                 PreparedStatement statement = connection.prepareStatement("DELETE FROM jdbc.cross_table\n" +
+                         "        WHERE  id_student = ?;")) {
+
+                statement.setInt(1, student.getId());
+                statement.execute();
+
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private GroupWithStudents map(ResultSet rs) throws SQLException {
